@@ -5,15 +5,19 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CommentAnalyzer {
 
 	private File file;
+	private List<Matcher> matchers = new ArrayList<Matcher>();
 
 	public CommentAnalyzer(File file) {
 		this.file = file;
+		addMatchers(matchers);
 	}
 
 	public Map<String, Integer> analyze() {
@@ -24,24 +28,10 @@ public class CommentAnalyzer {
 
 			String line = null;
 			while ((line = reader.readLine()) != null) {
-
-				//Convert line to lower case, ignoring case
-				line = line.toLowerCase();
-
-				//All these criteria can be true at the same time, therefore check each independently.
-				if (line.length() < 15) {
-
-					incOccurrence(resultsMap, "SHORTER_THAN_15");
-				}
-
-				if (line.contains("mover")) {
-
-					incOccurrence(resultsMap, "MOVER_MENTIONS");
-				}
-
-				if (line.contains("shaker")) {
-
-					incOccurrence(resultsMap, "SHAKER_MENTIONS");
+				for(Matcher mtr : matchers) {
+					if(mtr.check(line)) {
+						incOccurrence(resultsMap, mtr.getCriteria());
+					}
 				}
 			}
 
@@ -68,6 +58,21 @@ public class CommentAnalyzer {
 
 		countMap.putIfAbsent(key, 0);
 		countMap.put(key, countMap.get(key) + 1);
+	}
+
+	private void addMatchers(List<Matcher> matchers) {
+
+		RangeMatcher rangeMatcher = new RangeMatcher("SHORTER_THAN_15", -1, 15);
+		ContainsMatcher moverMatcher = new ContainsMatcher("MOVER_MENTIONS", "mover", false);
+		ContainsMatcher shakerMatcher = new ContainsMatcher("SHAKER_MENTIONS", "shaker", false);
+		ContainsMatcher questionMatcher = new ContainsMatcher("QUESTIONS", "?", false);
+		SpamWebsiteMatcher spamMatcher = new SpamWebsiteMatcher("SPAM");
+	
+		matchers.add(moverMatcher);
+		matchers.add(shakerMatcher);
+		matchers.add(questionMatcher);
+		matchers.add(rangeMatcher);
+		matchers.add(spamMatcher);
 	}
 
 }

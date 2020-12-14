@@ -9,7 +9,7 @@ public class Main {
 	public static void main(String[] args) {
 
 		Map<String, Integer> totalResults = new HashMap<>();
-
+		
 		File docPath = new File("docs");
 		File[] commentFiles = docPath.listFiles((d, n) -> n.endsWith(".txt"));
 
@@ -36,5 +36,5 @@ public class Main {
 		//Merge the two maps together, sum the values with the same key
 		source.forEach((k, v) -> target.merge(k, v, Integer::sum));
 	}
-
+	
 }
