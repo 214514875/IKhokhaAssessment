@@ -33,10 +33,8 @@ public class Main {
 	 */
 	private static void addReportResults(Map<String, Integer> source, Map<String, Integer> target) {
 
-		for (Map.Entry<String, Integer> entry : source.entrySet()) {
-			target.merge(entry.getKey(), entry.getValue(), Integer::sum);
-		}
-
+		//Merge the two maps together, sum the values with the same key
+		source.forEach((k, v) -> target.merge(k, v, Integer::sum));
 	}
 
 }

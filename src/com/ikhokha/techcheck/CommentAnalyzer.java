@@ -25,8 +25,10 @@ public class CommentAnalyzer {
 			String line = null;
 			while ((line = reader.readLine()) != null) {
 
+				//Convert line to lower case, ignoring case
 				line = line.toLowerCase();
 
+				//All these criteria can be true at the same time, therefore check each independently.
 				if (line.length() < 15) {
 
 					incOccurrence(resultsMap, "SHORTER_THAN_15");
