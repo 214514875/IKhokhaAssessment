@@ -61,12 +61,19 @@ public class CommentAnalyzer implements Callable<Map<String, Integer>>{
 		countMap.put(key, countMap.get(key) + 1);
 	}
 	
+	/**
+	 * Implementation for Callable interface
+	 */
 	@Override
 	public Map<String, Integer> call() throws Exception {
 		
 		return analyze();
 	}
 
+	/**
+	 * 
+	 * @param matchers - List of matchers we will be checking against
+	 */
 	private void addMatchers(List<Matcher> matchers) {
 
 		RangeMatcher rangeMatcher = new RangeMatcher("SHORTER_THAN_15", -1, 15);

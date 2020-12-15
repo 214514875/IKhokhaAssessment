@@ -11,11 +11,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class Main {
+	
+	private static int threadPoolSize = 10;
 
 	public static void main(String[] args) {
 
-		// Thread pool of 10
-		ExecutorService pool = Executors.newFixedThreadPool(10);
+		// Create a Thread pool of specified size
+		ExecutorService pool = Executors.newFixedThreadPool(threadPoolSize);
 
 		Map<String, Integer> totalResults = new HashMap<>();
 
@@ -25,12 +27,14 @@ public class Main {
 		// List of futures
 		List<Future<Map<String, Integer>>> results = new ArrayList<>();
 
+		// Iterate over all docs and submit each to its own thread, queueing when all threads are full.
 		for (File commentFile : commentFiles) {
 
 			final Future<Map<String, Integer>> future = pool.submit(new CommentAnalyzer(commentFile));
 			results.add(future);
 		}
 
+		// Consolidate all the results
 		for (Future<Map<String, Integer>> result : results) {
 			
 			try {
@@ -43,8 +47,10 @@ public class Main {
 			}
 		}
 		
+		//Shut the Executor Service down
 		pool.shutdown();
 
+		//Print results
 		System.out.println("RESULTS\n=======");
 		totalResults.forEach((k, v) -> System.out.println(k + " : " + v));
 	}

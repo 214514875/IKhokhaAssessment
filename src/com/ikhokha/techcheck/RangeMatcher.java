@@ -1,9 +1,20 @@
 package com.ikhokha.techcheck;
 
+/**
+ * Matcher class for lines with a certain length
+ * 
+ *
+ */
 public class RangeMatcher extends BaseMatcher {
 
 	private int greaterThan, lessThan;
 
+	/**
+	 * 
+	 * @param criteria - Test name
+	 * @param greaterThan - lower bound
+	 * @param lessThan - higher bound
+	 */
 	public RangeMatcher(String criteria, int greaterThan, int lessThan) {
 		
 		super.criteria = criteria;
