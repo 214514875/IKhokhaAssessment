@@ -5,6 +5,11 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.regex.Pattern;
 
+/**
+ * Matcher class for lines with a URL link
+ * 
+ *
+ */
 public class SpamWebsiteMatcher extends BaseMatcher {
 	
     public SpamWebsiteMatcher(String criteria) {
@@ -16,10 +21,12 @@ public class SpamWebsiteMatcher extends BaseMatcher {
 		//Split line using space delimiter
 		String[] lines = line.split(Pattern.quote(" "));
 		
+		//Test each separated word to see if it follows the rules of a valid URL
 		for(String ln : lines) {
 			
 			try 
 			{
+				//If successful we have a URL link in the comment
 				URL url = new URL(ln);
 				url.toURI();
 				return true;
