@@ -5,6 +5,7 @@ public class RangeMatcher extends BaseMatcher {
 	private int greaterThan, lessThan;
 
 	public RangeMatcher(String criteria, int greaterThan, int lessThan) {
+		
 		super.criteria = criteria;
 		this.greaterThan = greaterThan;
 		this.lessThan = lessThan;
@@ -23,7 +24,6 @@ public class RangeMatcher extends BaseMatcher {
 		// Set values
 		this.greaterThan = greaterThan;
 		this.lessThan = lessThan;
-
 	}
 
 	@Override

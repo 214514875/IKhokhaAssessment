@@ -9,13 +9,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
-public class CommentAnalyzer {
+public class CommentAnalyzer implements Callable<Map<String, Integer>>{
 
 	private File file;
 	private List<Matcher> matchers = new ArrayList<Matcher>();
 
 	public CommentAnalyzer(File file) {
+		
 		this.file = file;
 		addMatchers(matchers);
 	}
@@ -25,7 +27,7 @@ public class CommentAnalyzer {
 		Map<String, Integer> resultsMap = new HashMap<>();
 
 		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-
+			
 			String line = null;
 			while ((line = reader.readLine()) != null) {
 				for(Matcher mtr : matchers) {
@@ -44,7 +46,6 @@ public class CommentAnalyzer {
 		}
 
 		return resultsMap;
-
 	}
 
 	/**
@@ -58,6 +59,12 @@ public class CommentAnalyzer {
 
 		countMap.putIfAbsent(key, 0);
 		countMap.put(key, countMap.get(key) + 1);
+	}
+	
+	@Override
+	public Map<String, Integer> call() throws Exception {
+		
+		return analyze();
 	}
 
 	private void addMatchers(List<Matcher> matchers) {
@@ -74,5 +81,4 @@ public class CommentAnalyzer {
 		matchers.add(rangeMatcher);
 		matchers.add(spamMatcher);
 	}
-
 }

@@ -6,6 +6,7 @@ public class ContainsMatcher extends BaseMatcher {
 	private boolean matchCase;
 
 	public ContainsMatcher(String criteria, String checkString, boolean matchCase) {
+		
 		super.criteria = criteria;
 		this.matchCase = matchCase;
 		this.checkString = checkString;
